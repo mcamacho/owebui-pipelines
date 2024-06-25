@@ -156,30 +156,30 @@ class Pipeline:
         thread = client.beta.threads.create(messages=messages)
 
         try:
-            with client.beta.threads.runs.stream(
-                thread_id=thread.id,
-                assistant_id=assistant.id,
-                # instructions="Please address the user as Jane Doe. The user has a premium account.",
-                event_handler=EventHandler(),
-            ) as stream:
-                stream.until_done()
-            # run = client.beta.threads.runs.create_and_poll(
-            #     thread_id=thread.id, assistant_id=assistant.id
-            # )
+            # with client.beta.threads.runs.stream(
+            #     thread_id=thread.id,
+            #     assistant_id=assistant.id,
+            #     # instructions="Please address the user as Jane Doe. The user has a premium account.",
+            #     event_handler=EventHandler(),
+            # ) as stream:
+            #     stream.until_done()
+            run = client.beta.threads.runs.create_and_poll(
+                thread_id=thread.id, assistant_id=assistant.id
+            )
 
-            # messages = list(client.beta.threads.messages.list(thread_id=thread.id, run_id=run.id))
+            messages = list(client.beta.threads.messages.list(thread_id=thread.id, run_id=run.id))
 
-            # message_content = messages[0].content[0].text
-            # annotations = message_content.annotations
-            # citations = []
-            # for index, annotation in enumerate(annotations):
-            #     message_content.value = message_content.value.replace(annotation.text, f"[{index}]")
-            #     if file_citation := getattr(annotation, "file_citation", None):
-            #         cited_file = client.files.retrieve(file_citation.file_id)
-            #         citations.append(f"[{index}] {cited_file.filename}")
+            message_content = messages[0].content[0].text
+            annotations = message_content.annotations
+            citations = []
+            for index, annotation in enumerate(annotations):
+                message_content.value = message_content.value.replace(annotation.text, f"[{index}]")
+                if file_citation := getattr(annotation, "file_citation", None):
+                    cited_file = client.files.retrieve(file_citation.file_id)
+                    citations.append(f"[{index}] {cited_file.filename}")
 
-            # print(message_content.value)
-            # return message_content.value
-            # print("\n".join(citations))
+            print(message_content.value)
+            return message_content.value
+            print("\n".join(citations))
         except Exception as e:
             return f"Error: {e}"
