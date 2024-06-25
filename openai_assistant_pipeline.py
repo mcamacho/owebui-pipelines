@@ -63,7 +63,7 @@ class PostgresDB:
         print(f"The error '{e}' occurred")
         session.rollback()
 
-database_url = f"postgresql://postgres:${POSTGRESPW}@pg-database-1.cluster-ccte28sshn44.us-east-1.rds.amazonaws.com:5432/postgres"
+database_url = f"postgresql://postgres:{POSTGRESPW}@pg-database-1.cluster-ccte28sshn44.us-east-1.rds.amazonaws.com:5432/postgres"
 db = PostgresDB(database_url)
 # Function to get account_id by username
 def get_account_id_by_username(username):
