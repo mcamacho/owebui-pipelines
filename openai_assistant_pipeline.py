@@ -1,6 +1,6 @@
 """
 title: OpenAI Assistant Pipeline
-requirements: psycopg2
+requirements: psycopg2-binary
 """
 
 from typing import List, Union, Generator, Iterator
