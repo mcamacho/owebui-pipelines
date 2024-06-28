@@ -1,6 +1,6 @@
 """
 title: IQ-claude V.1
-requirements: langchain langchain-community langchain-chroma langchain-anthropic langchain-openai boto3 unstructured psycopg2-binary psutil
+requirements: langchain langchain-community langchain-chroma langchain-anthropic langchain-openai boto3 unstructured[md] psycopg2-binary psutil
 """
 
 import bs4
