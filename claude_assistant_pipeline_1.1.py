@@ -1,6 +1,6 @@
 """
 title: IQ-claude V.1
-requirements: langchain langchain-community langchain-chroma langchain-anthropic langchain-openai boto3 unstructured psycopg2-binary
+requirements: langchain langchain-community langchain-chroma langchain-anthropic langchain-openai boto3 unstructured psycopg2-binary psutil
 """
 
 import bs4
@@ -12,6 +12,7 @@ from langchain_community.document_loaders import S3DirectoryLoader
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from typing import List, Union, Generator, Iterator
 import os
 
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
