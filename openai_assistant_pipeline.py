@@ -112,15 +112,14 @@ class Pipeline:
         # The identifier must be unique across all pipelines.
         # The identifier must be an alphanumeric string that can include underscores or hyphens. It cannot contain spaces, special characters, slashes, or backslashes.
         # self.id = "openai_pipeline"
-        self.name = "OpenAI Assistant Pipeline"
+        self.name = "IQ V.1"
         self.valves = self.Valves(
             **{
                 "OPENAI_API_KEY": os.getenv(
                     "OPENAI_API_KEY", ""
                 )
             }
-        )
-        self.assistants = client.beta.assistants.list()
+        )        
         pass
 
     async def on_startup(self):
@@ -138,6 +137,7 @@ class Pipeline:
     ) -> Union[str, Generator, Iterator]:
         # This is where you can add your custom pipelines like RAG.
         print(f"pipe:{__name__}")
+        assistants = client.beta.assistants.list()
         MODEL = "gpt-4o"
         payload = {**body, "model": MODEL}
         username = payload["user"]["name"]
@@ -147,8 +147,8 @@ class Pipeline:
         print(payload)
 
         assistant = None
-        for assistantI in self.assistants.data:
-          print(assistantI)
+        for assistantI in assistants.data:
+          # print(assistantI)
           if assistantI.name == f"{account_id} assistant":
             print("found assistant")
             assistant = assistantI
@@ -164,6 +164,7 @@ class Pipeline:
             ) as stream:
                 for res in stream.text_deltas:
                     yield res
+            
             # run = client.beta.threads.runs.create_and_poll(
             #     thread_id=thread.id, assistant_id=assistant.id
             # )
