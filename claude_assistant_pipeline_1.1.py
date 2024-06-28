@@ -1,6 +1,6 @@
 """
 title: IQ-claude V.1
-requirements: langchain langchain-community langchain-chroma langchain-anthropic langchain-openai unstructured psycopg2-binary
+requirements: langchain langchain-community langchain-chroma langchain-anthropic langchain-openai boto3 unstructured psycopg2-binary
 """
 
 import bs4
@@ -14,11 +14,10 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 
-from google.colab import userdata
-aws_access_key = userdata.get('aws_access_key_id')
-aws_secret_access_key = userdata.get('aws_secret_access_key')
-os.environ["OPENAI_API_KEY"] = userdata.get('openai')
-os.environ["ANTHROPIC_API_KEY"] = userdata.get('anthropic')
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY", "")
+os.environ["ANTHROPIC_API_KEY"] = os.getenv("ANTHROPIC_API_KEY", "")
 bucket = 'roiq-screenshots'
 
 from langchain_anthropic import ChatAnthropic
@@ -46,8 +45,8 @@ class Pipeline:
         loader = S3DirectoryLoader(
             bucket=bucket,
             prefix="nc5vknnz/md/",
-            aws_access_key_id=aws_access_key,
-            aws_secret_access_key=aws_secret_access_key
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY
         )
         docs = loader.load()
 
